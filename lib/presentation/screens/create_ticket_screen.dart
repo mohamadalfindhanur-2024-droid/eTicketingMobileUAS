@@ -9,7 +9,7 @@ import '../../data/models/comment.dart';
 import '../../data/models/history_log.dart';
 import '../../data/models/notification_item.dart';
 import '../../presentation/widgets/custom_badge.dart';
-import 'package:image_picker/image_picker.dart';
+import '../../services/file_picker_service.dart';
 
 class CreateTicketScreen extends StatefulWidget {
   const CreateTicketScreen({super.key});
@@ -27,22 +27,18 @@ class _CreateTicketScreenState extends State<CreateTicketScreen> {
   String? _simulatedAttachmentName;
   bool _isUploading = false;
 
-  final ImagePicker _picker = ImagePicker();
-
   Future<void> _pickAttachment(String source) async {
     try {
       setState(() {
         _isUploading = true;
       });
-      final XFile? image = await _picker.pickImage(
-        source: source == 'camera' ? ImageSource.camera : ImageSource.gallery,
-      );
-      if (image != null) {
+      final String? filename = await FilePickerService.pickFile(source);
+      if (filename != null) {
         setState(() {
-          _simulatedAttachmentName = image.name;
+          _simulatedAttachmentName = filename;
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Lampiran berhasil ditambahkan: ${image.name}'), backgroundColor: successGreen),
+          SnackBar(content: Text('Lampiran berhasil ditambahkan: $filename'), backgroundColor: successGreen),
         );
       }
     } catch (e) {

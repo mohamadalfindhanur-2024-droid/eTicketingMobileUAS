@@ -28,23 +28,35 @@ class _CreateTicketScreenState extends State<CreateTicketScreen> {
   String? _simulatedAttachmentName;
   bool _isUploading = false;
 
-  void _simulatedPickAttachment(String source) {
-    setState(() {
-      _isUploading = true;
-    });
+  final ImagePicker _picker = ImagePicker();
 
-    // Simulate 1 second upload duration
-    Future.delayed(const Duration(seconds: 1), () {
+  Future<void> _pickAttachment(String source) async {
+    try {
+      setState(() {
+        _isUploading = true;
+      });
+      final XFile? image = await _picker.pickImage(
+        source: source == 'camera' ? ImageSource.camera : ImageSource.gallery,
+      );
+      if (image != null) {
+        setState(() {
+          _simulatedAttachmentName = image.name;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Lampiran berhasil ditambahkan: ${image.name}'), backgroundColor: successGreen),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Gagal memilih lampiran: $e'), backgroundColor: dangerRed),
+      );
+    } finally {
       if (mounted) {
         setState(() {
           _isUploading = false;
-          _simulatedAttachmentName = source == 'camera' ? 'CAM_FOTO_${DateTime.now().millisecond}.JPG' : 'GALLERY_LAMPIRAN_${DateTime.now().millisecond}.PNG';
         });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Lampiran berhasil ditambahkan ($source)'), backgroundColor: successGreen),
-        );
       }
-    });
+    }
   }
 
   void _showAttachmentOptions() {
@@ -65,7 +77,7 @@ class _CreateTicketScreenState extends State<CreateTicketScreen> {
                 title: const Text('Ambil dari Kamera'),
                 onTap: () {
                   context.pop();
-                  _simulatedPickAttachment('camera');
+                  _pickAttachment('camera');
                 },
               ),
               ListTile(
@@ -73,7 +85,7 @@ class _CreateTicketScreenState extends State<CreateTicketScreen> {
                 title: const Text('Pilih dari Galeri'),
                 onTap: () {
                   context.pop();
-                  _simulatedPickAttachment('gallery');
+                  _pickAttachment('gallery');
                 },
               ),
               const SizedBox(height: 10),

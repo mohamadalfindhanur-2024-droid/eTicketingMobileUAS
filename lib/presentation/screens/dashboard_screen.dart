@@ -9,7 +9,6 @@ import '../../data/models/comment.dart';
 import '../../data/models/history_log.dart';
 import '../../data/models/notification_item.dart';
 import '../../presentation/widgets/custom_badge.dart';
-import 'package:fl_chart/fl_chart.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});

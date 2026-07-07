@@ -1,4 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'comment.dart';
+import 'history_log.dart';
 
 class Ticket {
   final String id;

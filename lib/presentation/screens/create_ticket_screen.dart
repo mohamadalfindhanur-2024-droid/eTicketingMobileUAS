@@ -10,7 +10,6 @@ import '../../data/models/history_log.dart';
 import '../../data/models/notification_item.dart';
 import '../../presentation/widgets/custom_badge.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:file_picker/file_picker.dart';
 
 class CreateTicketScreen extends StatefulWidget {
   const CreateTicketScreen({super.key});

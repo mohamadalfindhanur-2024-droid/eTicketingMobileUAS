@@ -43,3 +43,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# UAS Reports
+Laporan Ujian Akhir Semester APP MOBILE.md
+Laporan_Style_Guide.md
